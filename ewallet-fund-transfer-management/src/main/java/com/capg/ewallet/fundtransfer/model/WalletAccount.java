@@ -31,8 +31,10 @@ public class WalletAccount {
 		return transactions;
 	}
 
+
 	public void setTransactions(List<WalletTransactions> transactions) {
 	
+
 		this.transactions = transactions;
 	}
 	

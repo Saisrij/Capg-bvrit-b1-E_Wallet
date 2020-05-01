@@ -8,6 +8,7 @@ import com.capg.ewallet.fundtransfer.model.WalletTransactions;
 public interface FundTransferService {
 
 
+
 	public List<WalletAccount> fundtransfer(double amount, WalletAccount fromaccount, WalletAccount toaccount);
 
 

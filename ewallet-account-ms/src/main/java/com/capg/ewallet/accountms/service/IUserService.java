@@ -3,6 +3,7 @@ package com.capg.ewallet.accountms.service;
 import java.util.List;
 
 import com.capg.ewallet.accountms.model.WalletAccount;
+import com.capg.ewallet.accountms.model.WalletTransactions;
 import com.capg.ewallet.accountms.model.WalletUser;
 
 public interface IUserService {
@@ -14,6 +15,8 @@ public interface IUserService {
 	public boolean deleteUser(int userId);
 	public List<WalletUser> getAllUsers();
 	public List<WalletAccount> getAllAccounts();
+	public double getAccountBalance(int accountId);
+	public List<WalletTransactions> getAllTransactions(int accountId);
 	
 
 }

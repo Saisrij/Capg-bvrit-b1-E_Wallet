@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -14,15 +12,14 @@ import javax.persistence.OneToOne;
 public class WalletAccount {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int accountId;
 	private double accountBalance;
 	public enum Status{ }
-	@ElementCollection
+
 	@OneToMany(targetEntity = WalletTransactions.class)
 	private List<WalletTransactions> transactions;
 	
-	@OneToOne(mappedBy = "walletAccount")
+	@OneToOne(targetEntity = WalletUser.class)
 	public WalletUser walletUser;
 	
 	
@@ -73,6 +70,7 @@ public class WalletAccount {
 		return "WalletAccount [accountId=" + accountId + ", accountBalance=" + accountBalance + ", transactions="
 				+ transactions + ", walletUser=" + walletUser + "]";
 	}
+	
 	
 	
 	

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capg.ewallet.accountms.model.WalletAccount;
+import com.capg.ewallet.accountms.model.WalletTransactions;
 import com.capg.ewallet.accountms.model.WalletUser;
-import com.capg.ewallet.accountms.service.UserServiceImpl;
 import com.capg.ewallet.accountms.service.IUserService;
 
 @RestController
@@ -22,40 +22,46 @@ import com.capg.ewallet.accountms.service.IUserService;
 public class CreateUserAccountController {
 	
 	@Autowired
-	IUserService service;
+	IUserService userService;
+	
 	
 	@PostMapping("/user/add")
 	public WalletUser createUserAccount(@RequestBody WalletUser newUser) {
-		return service.createUserAccount(newUser);
+		return userService.createUserAccount(newUser);
 	}
 	
-	@GetMapping("/user/id/{userId}")
-	public WalletUser getUserById(@PathVariable("userId")int userId) {
-		return service.getUserById(userId);
-	}
 
 	@GetMapping("/account/id/{accountId}")
 	public WalletAccount getAccountById(@PathVariable("accountId") int accountId) {
-		return service.getAccountById(accountId);
+		return userService.getAccountById(accountId);
 	}
 	
 	@PutMapping("/user/update")
 	public WalletUser updateUserDetails(@RequestBody WalletUser newUserData) {
 		int userId=newUserData.getUserId();
-		return service.updateUserDetails(userId, newUserData);
+		return userService.updateUserDetails(userId, newUserData);
 	}
 	
 	@DeleteMapping("/user/delete/id/{userId}")
 	public boolean deleteUser(@PathVariable("userId") int userId) {
-		return service.deleteUser(userId);
+		return userService.deleteUser(userId);
 	}
 	
 	@GetMapping("/get-accounts")
 	public List<WalletAccount> getAllAccounts(){
-		return service.getAllAccounts();
+		return userService.getAllAccounts();
 	}
 	@GetMapping("/get-users")
 	public List<WalletUser> getAllUsers(){
-		return service.getAllUsers();
+		return userService.getAllUsers();
+	}
+	
+	@GetMapping("/account/balance/{accountId}")
+	public double getAccountBalance(@PathVariable("accountId") int accountId) {
+		return userService.getAccountBalance(accountId);
+	}
+	@GetMapping("/account/transactions/{accountId}")
+	public List<WalletTransactions> getAllTransactions(@PathVariable("accountId") int accountId){
+		return userService.getAllTransactions(accountId);
 	}
 }

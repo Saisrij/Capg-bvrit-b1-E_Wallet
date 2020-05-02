@@ -1,31 +1,18 @@
 package com.capg.ewallet.accountms.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 public class WalletUser {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int userId;
 	private String userName;
 	private String password;
 	private long phoneNumber;
 	private String loginName;
-	
-	@OneToOne
-	private WalletAccount walletAccount;
-	
-	public WalletAccount getWalletAccount() {
-		return walletAccount;
-	}
-	public void setWalletAccount(WalletAccount walletAccount) {
-		this.walletAccount = walletAccount;
-	}
+
 	public int getUserId() {
 		return userId;
 	}
@@ -71,7 +58,7 @@ public class WalletUser {
 	@Override
 	public String toString() {
 		return "WalletUser [userId=" + userId + ", userName=" + userName + ", password=" + password + ", phoneNumber="
-				+ phoneNumber + ", loginName=" + loginName +  "]";
+				+ phoneNumber + ", loginName=" + loginName + "]";
 	}
 	
 	

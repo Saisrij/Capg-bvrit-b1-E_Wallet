@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capg.ewallet.accountms.model.WalletAccount;
@@ -63,5 +64,16 @@ public class CreateUserAccountController {
 	@GetMapping("/account/transactions/{accountId}")
 	public List<WalletTransactions> getAllTransactions(@PathVariable("accountId") int accountId){
 		return userService.getAllTransactions(accountId);
+	}
+	
+	
+	@GetMapping("/account/id/{fromId}/id/{toId}/amount/{amount}")
+	public WalletAccount fundtransfer(@PathVariable ("fromId") int fromAccountId,@PathVariable ("toId") int toAccountId,
+			@PathVariable("amount") double amount) {
+		return userService.fundtransfer(amount, fromAccountId,toAccountId);
+	}
+	@GetMapping("/account/addamount/id/{id}/amount/{amount}")
+	public WalletAccount addAmount(@PathVariable int id, @PathVariable("amount") double amount) {
+		return userService.addAmount(amount, id);
 	}
 }

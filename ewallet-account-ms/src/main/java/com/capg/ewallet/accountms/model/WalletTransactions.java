@@ -5,12 +5,15 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class WalletTransactions {
 	
 	@Id
 	private int transactionId;
 	private String description;
+	@DateTimeFormat(pattern = "yyyy/MM/ddThh:mm:ss")
 	private LocalDateTime dateOfTransaction;
 	private double amount;
 	private double accountBalance;

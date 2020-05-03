@@ -14,7 +14,10 @@ public class WalletAccount {
 	@Id
 	private int accountId;
 	private double accountBalance;
-	public enum Status{ }
+	public enum Status{ 
+		SavingsAccount,CurrentAccount;
+	}
+	private Status accountStatus;
 
 	@OneToMany(targetEntity = WalletTransactions.class)
 	private List<WalletTransactions> transactions;
@@ -23,6 +26,12 @@ public class WalletAccount {
 	public WalletUser walletUser;
 	
 	
+	public Status getAccountStatus() {
+		return accountStatus;
+	}
+	public void setAccountStatus(Status accountStatus) {
+		this.accountStatus = accountStatus;
+	}
 	public WalletUser getWalletUser() {
 		return walletUser;
 	}

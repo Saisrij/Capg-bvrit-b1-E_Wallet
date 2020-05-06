@@ -20,6 +20,7 @@ public interface IUserService {
 	
 	public WalletAccount fundtransfer(double amount, int fromAccountId, int toAccountId);
     public WalletAccount addAmount(double amount, int accountId);
+    public int getUserAccountId(int userId);
 	
 
 }

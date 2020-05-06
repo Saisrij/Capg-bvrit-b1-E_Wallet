@@ -151,5 +151,16 @@ public class UserServiceImpl implements IUserService{
 		}
 		return rt.getForObject("http://localhost:8200/transfer/account/id/"+accountId+"/amount/"+amount, WalletAccount.class);
 	}
-
+	
+	public int getUserAccountId(int userId) {
+		
+		List<WalletAccount> accountList=accountRepo.findAll();
+		for(WalletAccount account:accountList) {
+			if(userId==account.walletUser.getUserId()) {
+				int accountId=account.getAccountId();
+				return accountId;
+				}	
+	    }
+		return 0;
+		}
 }

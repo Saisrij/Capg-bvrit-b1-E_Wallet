@@ -16,31 +16,22 @@ import com.capg.ewallet.fundtransfer.exceptions.UserNotFoundException;
 import com.capg.ewallet.fundtransfer.model.WalletAccount;
 import com.capg.ewallet.fundtransfer.model.WalletTransactions;
 import com.capg.ewallet.fundtransfer.repository.FundTransferRepo;
+import com.capg.ewallet.fundtransfer.repository.TransactionRepo;
 
 @Service
 public class FundTransferServiceImpl implements FundTransferService {
 	@Autowired
-	FundTransferRepo repo;
+	FundTransferRepo accountRepo;
+	
+	@Autowired
+	TransactionRepo transactionsRepo;
 
 	@Transactional
 	public WalletAccount getAccountById(int accountId) {
-		if (!repo.existsById(accountId)) {
+		if (!accountRepo.existsById(accountId)) {
 			throw new UserNotFoundException("Account Not Found with ID [" + accountId + "]");
 		}
-		return repo.getOne(accountId);
-	}
-
-	@Transactional
-	public WalletAccount addAmount(double amount, WalletAccount accountId) {
-		WalletAccount account1 = repo.getOne(accountId.getAccountId());
-
-		if (amount < 0) {
-			throw new NameDoesNotExistsException("Enter valid amount");
-		} else {
-			double newAmount = amount + account1.getAccountBalance();
-			account1.setAccountBalance(newAmount);
-		}
-		return account1;
+		return accountRepo.getOne(accountId);
 	}
 
 	public WalletTransactions createBasicTransaction() {
@@ -50,45 +41,68 @@ public class FundTransferServiceImpl implements FundTransferService {
 		int transactionId = r.nextInt(1000);
 		transaction.setTransactionId(transactionId);
 		transaction.setDateOfTransaction(now);
-		return transaction;
-
+		return transactionsRepo.save(transaction);
+		}
+	
+	
+	@Transactional
+	public WalletAccount addAmount(double amount, int accountId) {
+		WalletAccount account = accountRepo.getOne(accountId);
+		if (amount <= 0) {
+			throw new NameDoesNotExistsException("Enter valid amount");
+		}
+		else
+		{
+			double newAmount = amount + account.getAccountBalance();
+			WalletTransactions addTransaction=createBasicTransaction();
+			addTransaction.setAccountBalance(newAmount);
+			addTransaction.setAmount(amount);
+			addTransaction.setDescription("Amount of Rs"+amount+"/- added successfully");
+			List<WalletTransactions> transactionsList=account.getTransactions();
+			transactionsList.add(addTransaction);
+			account.setAccountBalance(newAmount);
+			account.setTransactions(transactionsList);
+			//transactionsRepo.save(addTransaction);
+			accountRepo.save(account);
+		}
+		return account;
 	}
 
-	public List<WalletAccount> fundtransfer(double amount, WalletAccount fromAccount, WalletAccount toAccount) {
-		List<WalletAccount> list = new ArrayList<WalletAccount>();
+	
+
+	@Transactional
+	public WalletAccount fundtransfer(double amount, int fromAccountId, int toAccountId) {
+		//List<WalletAccount> list = new ArrayList<WalletAccount>();
+		WalletAccount fromAccount=getAccountById(fromAccountId);
+		WalletAccount toAccount=getAccountById(toAccountId);
 
 		List<WalletTransactions> fromTransactionList = fromAccount.getTransactions();
 		List<WalletTransactions> toTransactionList = toAccount.getTransactions();
 		if(amount>fromAccount.getAccountBalance()) {
 			throw new NameDoesNotExistsException("Balance insufficient");
 		}
-		if ((fromAccount.getAccountBalance() < 0) || (fromAccount.getAccountBalance() < 500)) {
-			throw new NameDoesNotExistsException("Transaction failed because account does not contain minimum balance");
-		} else {
 
-			fromAccount.setAccountBalance(fromAccount.getAccountBalance() - amount);
-			toAccount.setAccountBalance(toAccount.getAccountBalance() + amount);
+		fromAccount.setAccountBalance(fromAccount.getAccountBalance() - amount);
+		toAccount.setAccountBalance(toAccount.getAccountBalance() + amount);
 
-			WalletTransactions fromTransaction = createBasicTransaction();
-			fromTransaction.setDescription("Transaction Successfull: Amount Debited");
-			fromTransaction.setAccountBalance(fromAccount.getAccountBalance());
-			fromTransaction.setAmount(amount);
-			System.out.println("From transactions" + fromTransaction);
-			fromTransactionList.add(fromTransaction);
-			fromAccount.setTransactions(fromTransactionList);
+		WalletTransactions fromTransaction = createBasicTransaction();
+		fromTransaction.setDescription("Transaction Successfull: Amount of Rs:"+amount+" Debited from your account");
+		fromTransaction.setAccountBalance(fromAccount.getAccountBalance());
+		fromTransaction.setAmount(amount);
+		fromTransactionList.add(fromTransaction);
+		fromAccount.setTransactions(fromTransactionList);
+		accountRepo.save(fromAccount);
 
-			WalletTransactions toTransaction = createBasicTransaction();
-			toTransaction.setTransactionId(fromTransaction.getTransactionId());
-			toTransaction.setDescription("Transaction Successfull: Amount Credited");
-			toTransaction.setAccountBalance(toAccount.getAccountBalance());
-			toTransaction.setAmount(amount);
-			System.out.println("To transactions" + toTransaction);
-			toTransactionList.add(toTransaction);
-			toAccount.setTransactions(toTransactionList);
-			list.add(fromAccount);
-			list.add(toAccount);
-		}
-		return list;
+		WalletTransactions toTransaction = createBasicTransaction();
+		toTransaction.setDescription("Transaction Successfull: Amount of Rs:"+amount+" Credited to your account");
+		toTransaction.setAccountBalance(toAccount.getAccountBalance());
+		toTransaction.setAmount(amount);
+		toTransactionList.add(toTransaction);
+		toAccount.setTransactions(toTransactionList);
+		accountRepo.save(toAccount);
+	    //list.add(fromAccount);
+		//list.add(toAccount);
+		return fromAccount;
 	}
 	}
 

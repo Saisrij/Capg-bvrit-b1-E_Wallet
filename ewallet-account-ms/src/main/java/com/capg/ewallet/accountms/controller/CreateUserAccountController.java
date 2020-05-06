@@ -19,7 +19,7 @@ import com.capg.ewallet.accountms.model.WalletUser;
 import com.capg.ewallet.accountms.service.IUserService;
 
 @RestController
-@RequestMapping("/account-management")
+@RequestMapping("/account")
 public class CreateUserAccountController {
 	
 	@Autowired
@@ -32,7 +32,7 @@ public class CreateUserAccountController {
 	}
 	
 
-	@GetMapping("/account/id/{accountId}")
+	@GetMapping("/admin/account/id/{accountId}")
 	public WalletAccount getAccountById(@PathVariable("accountId") int accountId) {
 		return userService.getAccountById(accountId);
 	}
@@ -48,32 +48,38 @@ public class CreateUserAccountController {
 		return userService.deleteUser(userId);
 	}
 	
-	@GetMapping("/get-accounts")
+	@GetMapping("/admin/get-accounts")
 	public List<WalletAccount> getAllAccounts(){
 		return userService.getAllAccounts();
 	}
-	@GetMapping("/get-users")
+	@GetMapping("/admin/get-users")
 	public List<WalletUser> getAllUsers(){
 		return userService.getAllUsers();
 	}
 	
-	@GetMapping("/account/balance/{accountId}")
+	@GetMapping("/user/balance/{accountId}")
 	public double getAccountBalance(@PathVariable("accountId") int accountId) {
 		return userService.getAccountBalance(accountId);
 	}
-	@GetMapping("/account/transactions/{accountId}")
+	@GetMapping("/user/transactions/{accountId}")
 	public List<WalletTransactions> getAllTransactions(@PathVariable("accountId") int accountId){
 		return userService.getAllTransactions(accountId);
 	}
 	
 	
-	@GetMapping("/account/id/{fromId}/id/{toId}/amount/{amount}")
+	@GetMapping("/user/from-id/{fromId}/to-id/{toId}/amount/{amount}")
 	public WalletAccount fundtransfer(@PathVariable ("fromId") int fromAccountId,@PathVariable ("toId") int toAccountId,
 			@PathVariable("amount") double amount) {
 		return userService.fundtransfer(amount, fromAccountId,toAccountId);
 	}
-	@GetMapping("/account/addamount/id/{id}/amount/{amount}")
+	@GetMapping("/user/addamount/id/{id}/amount/{amount}")
 	public WalletAccount addAmount(@PathVariable int id, @PathVariable("amount") double amount) {
 		return userService.addAmount(amount, id);
 	}
+	
+	@GetMapping("/user/get-accountid/{userId}")
+	public int getUserAccountId(@PathVariable("userId")int userId) {
+		return userService.getUserAccountId(userId);
+	}
+	
 }

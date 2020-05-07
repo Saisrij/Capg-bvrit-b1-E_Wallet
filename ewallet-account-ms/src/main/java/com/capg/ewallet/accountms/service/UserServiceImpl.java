@@ -145,11 +145,12 @@ public class UserServiceImpl implements IUserService{
 	}
 
 
-	public WalletAccount addAmount(double amount, int accountId) {
+	public double addAmount(double amount, int accountId) {
 		if(!accountRepo.existsById(accountId)) {
 			throw new UserAccountNotFoundException("Account Not Found with ID ["+accountId+"]");
 		}
-		return rt.getForObject("http://localhost:8200/transfer/account/id/"+accountId+"/amount/"+amount, WalletAccount.class);
+		WalletAccount account=rt.getForObject("http://localhost:8200/transfer/account/id/"+accountId+"/amount/"+amount, WalletAccount.class);
+		return account.getAccountBalance();
 	}
 	
 	public int getUserAccountId(int userId) {

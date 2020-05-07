@@ -3,6 +3,7 @@ package com.capg.ewallet.accountms.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capg.ewallet.accountms.model.WalletAccount;
@@ -20,6 +20,7 @@ import com.capg.ewallet.accountms.service.IUserService;
 
 @RestController
 @RequestMapping("/account")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CreateUserAccountController {
 	
 	@Autowired
@@ -73,7 +74,7 @@ public class CreateUserAccountController {
 		return userService.fundtransfer(amount, fromAccountId,toAccountId);
 	}
 	@GetMapping("/user/addamount/id/{id}/amount/{amount}")
-	public WalletAccount addAmount(@PathVariable int id, @PathVariable("amount") double amount) {
+	public double addAmount(@PathVariable int id, @PathVariable("amount") double amount) {
 		return userService.addAmount(amount, id);
 	}
 	

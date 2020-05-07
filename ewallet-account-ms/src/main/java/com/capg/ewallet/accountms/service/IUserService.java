@@ -19,7 +19,7 @@ public interface IUserService {
 	public List<WalletTransactions> getAllTransactions(int accountId);
 	
 	public WalletAccount fundtransfer(double amount, int fromAccountId, int toAccountId);
-    public WalletAccount addAmount(double amount, int accountId);
+    public double addAmount(double amount, int accountId);
     public int getUserAccountId(int userId);
 	
 

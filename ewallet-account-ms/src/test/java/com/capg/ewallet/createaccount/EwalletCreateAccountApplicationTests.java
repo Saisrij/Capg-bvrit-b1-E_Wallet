@@ -1,5 +1,6 @@
 package com.capg.ewallet.createaccount;
 
+<<<<<<< HEAD
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -58,3 +59,16 @@ class EwalletCreateAccountApplicationTests {
 	
 
 
+=======
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class EwalletCreateAccountApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
+>>>>>>> branch 'master' of https://github.com/Saisrij/Capg-bvrit-b1-E_Wallet.git

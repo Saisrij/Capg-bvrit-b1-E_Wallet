@@ -1,10 +1,10 @@
 package com.capg.ewallet.createaccount;
 
-<<<<<<< HEAD
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +23,11 @@ class EwalletCreateAccountApplicationTests {
 	IAccountRepo repo;
 	IUserRepo repo1;
 	
+	@BeforeAll
+	public WalletAccount getAccountById() {
+		return repo.getOne(945);
+	}
+	
 
 	@Test
 	public void createaccounttest () {
@@ -36,12 +41,9 @@ class EwalletCreateAccountApplicationTests {
 	}
 	@Test
 	public void addmounttest() {
-		WalletAccount bean = new WalletAccount();
-		double amount = 300;
-		bean.setAccountId(101);
-		bean.setAccountBalance(1200);
-		double account = bean.getAccountBalance() + amount;
-		assertEquals(true,service.addAmount(101,300)=account);
+		WalletAccount bean =getAccountById();
+		double balance=bean.getAccountBalance()+300;
+		assertEquals(balance,service.addAmount(300,945));
 		
 	}
 	@Test
@@ -50,25 +52,21 @@ class EwalletCreateAccountApplicationTests {
 	}
 	@Test
 	public void fundTransfertest() {
-		WalletAccount bean = new WalletAccount();
-		
 		
 	}
-	
-	}
-	
-
-
-=======
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class EwalletCreateAccountApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
 }
->>>>>>> branch 'master' of https://github.com/Saisrij/Capg-bvrit-b1-E_Wallet.git
+
+
+
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
+//
+//@SpringBootTest
+//class EwalletCreateAccountApplicationTests {
+//
+//	@Test
+//	void contextLoads() {
+//	}
+//
+//}
+

@@ -19,17 +19,19 @@
 	</properties>
 
 	<dependencies>
+	<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    <version>2.2.2.RELEASE</version>
+</dependency>
 	
-
-		<!-- https://mvnrepository.com/artifact/oracle/oracle-jdbc -->
+	
+<!-- https://mvnrepository.com/artifact/oracle/oracle-jdbc -->
 <dependency>
     <groupId>com.oracle</groupId>
     <artifactId>ojdbc6</artifactId>
-<<<<<<< HEAD
-    <version>11.2.0.2</version>
-=======
     <version>11.2.0</version>
->>>>>>> branch 'master' of https://github.com/Saisrij/Capg-bvrit-b1-E_Wallet.git
 </dependency>
 	
 	

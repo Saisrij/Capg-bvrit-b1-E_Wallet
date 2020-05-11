@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: api-gateway-ms
+   
+server:  port: 8321
+  
+zuul:  routes:    account-ms-user:
+      path: /account/user/**
+      service-id: account-ms
+     
+    account-ms-admin:
+      path: /account/admin/**
+      service-id: account-ms
+    
+    account-ms-public:
+      path: /account/p/**
+      service-id: account-ms 

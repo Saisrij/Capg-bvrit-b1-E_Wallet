@@ -3,6 +3,7 @@ package com.capg.ewallet.accountms.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.capg.ewallet.accountms.model.UserCredentials;
 import com.capg.ewallet.accountms.model.WalletAccount;
 import com.capg.ewallet.accountms.model.WalletTransactions;
 import com.capg.ewallet.accountms.model.WalletUser;
@@ -29,6 +32,7 @@ public class UserAccountController {
 	
 	@PostMapping("/user/add")
 	public WalletUser createUserAccount(@RequestBody WalletUser newUser) {
+		System.out.println("Controller :"+newUser);
 		return userService.createUserAccount(newUser);
 	}
 	
@@ -82,9 +86,24 @@ public class UserAccountController {
 		return userService.getUserAccountId(userId);
 	}
 	
-	@GetMapping("/p/get-account/{loginName}")
-	public WalletAccount getAccountByLoginName(@PathVariable("loginName") String loginName) {
-		return userService.getAccountByLoginName(loginName);
+	@GetMapping("/user/get-account/{loginName}")
+	public WalletAccount getUserbyLoginName(@PathVariable("loginName") String loginName) {
+		return this.userService.getAccountByLoginName(loginName);
+	}
+	
+	@PostMapping("/user/authenticate")
+	public WalletAccount authenticateUser(@RequestBody UserCredentials credentials) {
+		WalletAccount userAccount=userService.getAccountByLoginName(credentials.getUsername());
+		
+		if(userAccount==null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		else if(!(credentials.getPassword().equals((userAccount.walletUser.getPassword())))) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED) ;
+		}
+		else 
+			return userAccount;
+		
 	}
 }
 

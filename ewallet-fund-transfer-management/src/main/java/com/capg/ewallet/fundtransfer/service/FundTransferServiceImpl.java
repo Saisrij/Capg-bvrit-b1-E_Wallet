@@ -48,7 +48,7 @@ public class FundTransferServiceImpl implements FundTransferService {
 	@Transactional
 	public WalletAccount addAmount(double amount, int accountId) {
 		WalletAccount account = accountRepo.getOne(accountId);
-		if (amount <= 0) {
+		if (amount == 0 || amount<0) {
 			throw new NameDoesNotExistsException("Enter valid amount");
 		}
 		else
@@ -73,6 +73,9 @@ public class FundTransferServiceImpl implements FundTransferService {
 	@Transactional
 	public WalletAccount fundtransfer(double amount, int fromAccountId, int toAccountId) {
 		//List<WalletAccount> list = new ArrayList<WalletAccount>();
+		if(!accountRepo.existsById(toAccountId)) {
+			throw new UserNotFoundException("Account Not found with id ["+toAccountId+"]");
+		}
 		WalletAccount fromAccount=getAccountById(fromAccountId);
 		WalletAccount toAccount=getAccountById(toAccountId);
 

@@ -35,9 +35,12 @@ public class UserServiceImpl implements IUserService{
 	public WalletUser createUserAccount(WalletUser newUser) {
 		
 		String loginName=newUser.getLoginName();
+		System.out.println("Login Name is"+loginName);
 		List<WalletUser> usersList=getAllUsers();
 		for(WalletUser user: usersList) {
-			if(loginName==user.getLoginName()) {
+			System.out.println(user.getLoginName());
+			System.out.println(loginName.equals(user.getLoginName()));
+			if(loginName.equals(user.getLoginName())) {
 				throw new LoginNameExistsException("Name already exists: Enter other login name");
 			}
 		}
@@ -138,7 +141,8 @@ public class UserServiceImpl implements IUserService{
 		if(!accountRepo.existsById(toAccountId)) {
 			throw new UserAccountNotFoundException("Account Not Found with ID ["+toAccountId+"]");
 		}
-		return rt.getForObject("http://localhost:8200/transfer/account/id/"+fromAccountId+"/id/"+toAccountId+"/amount/"+amount, WalletAccount.class);
+		return rt.getForObject("http://localhost:8200/transfer/account/id/"+fromAccountId+"/id/"
+		                                       +toAccountId+"/amount/"+amount, WalletAccount.class);
 	}
 
 
@@ -146,7 +150,8 @@ public class UserServiceImpl implements IUserService{
 		if(!accountRepo.existsById(accountId)) {
 			throw new UserAccountNotFoundException("Account Not Found with ID ["+accountId+"]");
 		}
-		WalletAccount account=rt.getForObject("http://localhost:8200/transfer/account/id/"+accountId+"/amount/"+amount, WalletAccount.class);
+		WalletAccount account=rt.getForObject("http://localhost:8200/transfer/account/id/"
+		                                            +accountId+"/amount/"+amount, WalletAccount.class);
 		return account.getAccountBalance();
 	}
 	
@@ -164,6 +169,9 @@ public class UserServiceImpl implements IUserService{
 
 	public  WalletAccount getAccountByLoginName(String loginName) {
 		WalletUser user=userRepo.getUserByLoginName(loginName);
+		if(user==null) {
+			throw new UserAccountNotFoundException("Account Not Fount with Login Name :"+loginName);
+		}
 		List<WalletAccount> accountList=accountRepo.findAll();
 		for(WalletAccount account:accountList) {
 			if(user.getUserId()==account.walletUser.getUserId()) {

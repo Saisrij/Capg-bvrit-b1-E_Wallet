@@ -45,7 +45,6 @@ public class WalletUser {
 	}
 	
 	public WalletUser() {
-		// TODO Auto-generated constructor stub
 	}
 	public WalletUser(int userId, String userName, String password, long phoneNumber, String loginName) {
 		super();

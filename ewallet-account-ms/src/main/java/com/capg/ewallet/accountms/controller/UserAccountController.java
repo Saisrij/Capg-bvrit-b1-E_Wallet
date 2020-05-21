@@ -32,7 +32,6 @@ public class UserAccountController {
 	
 	@PostMapping("/user/add")
 	public WalletUser createUserAccount(@RequestBody WalletUser newUser) {
-		System.out.println("Controller :"+newUser);
 		return userService.createUserAccount(newUser);
 	}
 	
@@ -81,9 +80,9 @@ public class UserAccountController {
 		return userService.addAmount(amount, id);
 	}
 	
-	@GetMapping("/user/get-accountid/{userId}")
-	public int getUserAccountId(@PathVariable("userId")int userId) {
-		return userService.getUserAccountId(userId);
+	@GetMapping("/user/get-accountid/{loginName}")
+	public int getUserAccountId(@PathVariable("loginName")String loginName) {
+		return userService.getUserAccountId(loginName);
 	}
 	
 	@GetMapping("/user/get-account/{loginName}")

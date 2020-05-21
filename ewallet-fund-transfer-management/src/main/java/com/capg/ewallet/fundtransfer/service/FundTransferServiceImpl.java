@@ -48,7 +48,7 @@ public class FundTransferServiceImpl implements FundTransferService {
 	@Transactional
 	public WalletAccount addAmount(double amount, int accountId) {
 		WalletAccount account = accountRepo.getOne(accountId);
-		if (amount == 0 || amount<0) {
+		if (amount == 0 || amount<0 || amount>10000) {
 			throw new NameDoesNotExistsException("Enter valid amount");
 		}
 		else

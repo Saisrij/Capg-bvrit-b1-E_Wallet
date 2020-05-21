@@ -49,7 +49,6 @@ public class WalletTransactions {
 	}
 	
 	public WalletTransactions() {
-		// TODO Auto-generated constructor stub
 	}
 	public WalletTransactions(int transactionId, String description, LocalDateTime dateOfTransaction, double amount,
 			double accountBalance) {

@@ -2,7 +2,6 @@ package com.capg.ewallet.accountms.model;
 
 import java.util.List;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -58,7 +57,7 @@ public class WalletAccount {
 	}
 	
 	public WalletAccount() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	public WalletAccount(int accountId, double accountBalance, List<WalletTransactions> transactions) {
 		super();

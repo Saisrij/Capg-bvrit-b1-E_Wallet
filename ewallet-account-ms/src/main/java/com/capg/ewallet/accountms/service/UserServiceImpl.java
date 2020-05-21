@@ -35,11 +35,8 @@ public class UserServiceImpl implements IUserService{
 	public WalletUser createUserAccount(WalletUser newUser) {
 		
 		String loginName=newUser.getLoginName();
-		System.out.println("Login Name is"+loginName);
 		List<WalletUser> usersList=getAllUsers();
 		for(WalletUser user: usersList) {
-			System.out.println(user.getLoginName());
-			System.out.println(loginName.equals(user.getLoginName()));
 			if(loginName.equals(user.getLoginName())) {
 				throw new LoginNameExistsException("Name already exists: Enter other login name");
 			}
@@ -103,10 +100,7 @@ public class UserServiceImpl implements IUserService{
 			}
 		}
 		userRepo.delete(user);
-		if(!userRepo.existsById(userId)) {
-			return true;
-		}
-		return false;
+		return !userRepo.existsById(userId);
 	}
 	
 	@Transactional
@@ -155,15 +149,18 @@ public class UserServiceImpl implements IUserService{
 		return account.getAccountBalance();
 	}
 	
-	public int getUserAccountId(int userId) {
+	public int getUserAccountId(String loginName) {
 		
+		WalletUser user=userRepo.getUserByLoginName(loginName);
+		if(user==null) {
+			throw new UserAccountNotFoundException("Account Not Fount with Login Name :"+loginName);
+		}
 		List<WalletAccount> accountList=accountRepo.findAll();
 		for(WalletAccount account:accountList) {
-			if(userId==account.walletUser.getUserId()) {
-				int accountId=account.getAccountId();
-				return accountId;
-				}	
-	    }
+			if(user.getUserId()==account.walletUser.getUserId()) {
+				return account.getAccountId();
+			}
+		}
 		return 0;
 		}
 
